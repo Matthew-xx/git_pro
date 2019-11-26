@@ -15,13 +15,14 @@ func ParseCity(contents []byte) engine.ParseResult  {
 
 	result := engine.ParseResult{}
 	for _, m := range matches{
+		url := string(m[1])
 		name := string(m[2])
 		//result.Items = append(result.Items,"user"+ name)  //返回城市的名字,转成string方便(engine里面)打印
 		result.Requests = append(result.Requests,engine.Request{
-			Url:   string(m[1]),
+			Url:   url,
 			//ParserFunc: ParseProfile,  //再还没定义好parserfunc时先返回一个不做事的parser，这里往下解析个人
 			ParserFunc: func(contents []byte) engine.ParseResult {
-				return ParseProfile(contents,name)
+				return ParseProfile(contents,url,name)
 				//对比上面的，用闭包返回可以不用修改profile里面的struct（其他地方用不上),多了一个读取用户姓名的参数
 			},
 		})

@@ -1,13 +1,9 @@
 package engine
 
-import (
-	"../model"
-	"log"
-)
-
 type ConcurrentEngine struct {
 	Scheduler Scheduler
 	WorkerCount int
+	ItemChan chan Item  //interface{}  //存储通道，是一个interface，什么都能接收
 }
 
 type Scheduler interface {
@@ -38,14 +34,16 @@ func (e *ConcurrentEngine) Run (seeds ...Request) {
 		e.Scheduler.Submit(r)
 	}
 
-	itemCount := 0
+	//itemCount := 0
 	for {
 		result := <- out  //收Out
 		for _,item := range result.Items{
+			go func() { e.ItemChan <- item}()  //拿到item后“扔掉",下面拿到request后"扔掉"
+			/*
 			if _,ok := item.(model.Profile);ok {
 				log.Printf("GOT item #%d: %v", itemCount,item)
 				itemCount++
-			}
+			}*/
 		}
 		for _,request := range result.Requests{
 			e.Scheduler.Submit(request)  //再将request送给schedule调度器

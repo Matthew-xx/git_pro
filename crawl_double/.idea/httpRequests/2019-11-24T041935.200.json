@@ -1,0 +1,17 @@
+{
+  "name": "01f52b124d08",
+  "cluster_name": "docker-cluster",
+  "cluster_uuid": "_3EDrEafTRiGJoc7tdJ4MQ",
+  "version": {
+    "number": "7.1.1",
+    "build_flavor": "default",
+    "build_type": "docker",
+    "build_hash": "7a013de",
+    "build_date": "2019-05-23T14:04:00.380842Z",
+    "build_snapshot": false,
+    "lucene_version": "8.0.0",
+    "minimum_wire_compatibility_version": "6.8.0",
+    "minimum_index_compatibility_version": "6.0.0-beta1"
+  },
+  "tagline": "You Know, for Search"
+}

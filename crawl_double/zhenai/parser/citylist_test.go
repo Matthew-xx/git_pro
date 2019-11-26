@@ -18,10 +18,10 @@ func TestParseCityList(t *testing.T)  {
 	const resultsize  =  70
 
 	expectedUrls := []string{"","","",}
-	expectedCities := []string{"","","",}
+	//expectedCities := []string{"","","",}
 	
 	if len(result.Requests) != resultsize {
-		t.Errorf("result should have %d" + "requests; but hao %d",resultsize,len(result.Requests))  //对比应该有的数量和实际读取到的数量判断是否正确读取
+		t.Errorf("result should have %d" + "requests; but have %d",resultsize,len(result.Requests))  //对比应该有的数量和实际读取到的数量判断是否正确读取
 	}
 
 	for i,url := range expectedUrls{
@@ -31,12 +31,12 @@ func TestParseCityList(t *testing.T)  {
 	}
 
 	if len(result.Items) != resultsize {
-		t.Errorf("result should have %d" + "requests; but hao %d",resultsize,len(result.Items))  //对比应该有的数量和实际读取到的数量判断是否正确读取
+		t.Errorf("result should have %d" + "requests; but have %d",resultsize,len(result.Items))  //对比应该有的数量和实际读取到的数量判断是否正确读取
 	}
-
+	/*
 	for i,city := range expectedCities{
 		if result.Items[i].(string) != city{
 			t.Errorf("expected city %d: %s;but" + "was %s",i,city,result.Items[i].(string))
 		} //数量对得上再看下级（各城市）是否对得上
-	}
+	}*/
 }
