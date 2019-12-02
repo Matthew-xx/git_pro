@@ -4,7 +4,10 @@ type ConcurrentEngine struct {
 	Scheduler Scheduler
 	WorkerCount int
 	ItemChan chan Item  //interface{}  //存储通道，是一个interface，什么都能接收
+	RequestProcessor  Processor
 }
+
+type Processor func(Request) (ParseResult,error) //类型与worker一致
 
 type Scheduler interface {
 	ReadyNotifier
@@ -26,7 +29,7 @@ func (e *ConcurrentEngine) Run (seeds ...Request) {
 	e.Scheduler.Run()
 
 	for i:=0;i<e.WorkerCount;i++{
-		createWorker(e.Scheduler.WorkerChan(),out,e.Scheduler)
+		e.createWorker(e.Scheduler.WorkerChan(),out,e.Scheduler)
 		//向e.Scheduler.WorkerChan()要workerchan
 	}
 
@@ -52,7 +55,7 @@ func (e *ConcurrentEngine) Run (seeds ...Request) {
 }
 
 
-
+/*
 func createWorker(in chan Request,out chan ParseResult,ready ReadyNotifier)  {
 	//in := make(chan Request)
 	go func() {
@@ -60,7 +63,23 @@ func createWorker(in chan Request,out chan ParseResult,ready ReadyNotifier)  {
 			//tell scheduler i'm ready
 			ready.WorkerReady(in)
 			request := <- in
-			result,err := worker(request)
+			result,err := Worker(request)
+			if err!= nil {
+				continue
+			}
+			out <- result  //将result送去out
+		}
+	}()
+}*/
+
+func (e *ConcurrentEngine)createWorker(in chan Request,out chan ParseResult,ready ReadyNotifier)  {
+	//in := make(chan Request)
+	go func() {
+		for {
+			//tell scheduler i'm ready
+			ready.WorkerReady(in)
+			request := <- in
+			result,err := e.RequestProcessor(request)  //将worker换成
 			if err!= nil {
 				continue
 			}
@@ -68,6 +87,4 @@ func createWorker(in chan Request,out chan ParseResult,ready ReadyNotifier)  {
 		}
 	}()
 }
-
-
 

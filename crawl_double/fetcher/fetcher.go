@@ -6,11 +6,14 @@ import (
 	"log"
 	"net/http"
 	"time"
+	"../../crawl_distributed/config"
 )
 
-var ratelimit = time.Tick(100*time.Millisecond)
+var ratelimit = time.Tick(time.Second / config.Qps)
 func Fetch(url string) ([]byte,error) {
 	<- ratelimit   //避免访问网站速度过快遭反爬
+	log.Printf("fetching url %s",url)
+
 	//仿浏览器
 	client := http.Client{}
 	request, err := http.NewRequest("GET", url, nil)

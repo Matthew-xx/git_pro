@@ -23,7 +23,26 @@ var idUrlRe = regexp.MustCompile(`http://album.zhenai.com/u/([\d]+)`)
 func ParseProfile(contents []byte) engine.ParseResult{
 	profile := model.Profile{}
 */
-func ParseProfile(contents []byte,url string,name string) engine.ParseResult{
+
+type ProfileParser struct {
+	userName string
+}
+
+func (p *ProfileParser) Parse(contents []byte,url string) engine.ParseResult{
+	return parseProfile(contents,url,p.userName)
+}
+
+func (p *ProfileParser) Serialize() (name string,args interface{}){
+	return "ProfileParser",p.userName
+}
+
+func NewProfileParser(name string) *ProfileParser {
+	return &ProfileParser{
+		userName:name,
+	}
+}
+
+func parseProfile(contents []byte,url string,name string) engine.ParseResult{
 	profile := model.Profile{}
 	profile.Name = name   //比上面注释的加了一个name，这样便可以在爬取城市时候读到的个人姓名拿过来而不用再写代码去爬
 	/*

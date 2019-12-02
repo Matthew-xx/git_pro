@@ -16,10 +16,11 @@ func main() {
 		Scheduler:   &scheduler.QueuedScheduler{},
 		WorkerCount: 100,
 		ItemChan:   ItemChan ,
+		RequestProcessor:engine.Worker,
 	}
 	e.Run(engine.Request{
 		Url:"http://www.zhenai.com/zhenghun",
 		//http://www.taonanw.com
-		ParserFunc: parser.ParserCityList,
+		Parser: engine.NewFuncParser(parser.ParserCityList,"ParserCityList"),
 	})
 }
