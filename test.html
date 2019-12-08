@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>练习</title>
+</head>
+<body>
+
+<!--表格-->
+<div>
+    <table>
+        <caption>成绩单</caption>
+        <thead>
+        <tr>
+            <th>语文</th>
+            <th>数学</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>78</td>
+            <td>92</td>
+        </tr>
+        </tbody>
+        <tfoot>
+        <tr>
+            <td>67</td>
+            <td>75</td>
+        </tr>
+        </tfoot>
+    </table>
+</div>
+
+<hr/>
+<!--表单-->
+
+<form action="",method="post">
+    <div>登录xxx</div>
+    <p>
+        <span>账号：</span><input type="text" name="name"/>
+    </p>
+    <p>
+        <span>密码：</span><input type="password" name="pwd">
+    </p>
+    <input type="checkbox" name="remember-me" /><span>记住账号</span>
+    <input type="submit" value="登录" />
+</form>
+
+<hr/>
+
+
+<div>
+    <input id="Radio1" type="radio" />单选框
+    <input id="Checkbox1" type="checkbox" />复选框
+</div>
+
+<div>
+    <input id="rdo" name="rdo" type="radio" /><label for="rdo">扩大单选框</label>
+    <input id="cbx" name="cbx" type="checkbox" /><label for="cbx">扩大复选框</label>
+</div>
+<hr/>
+
+<!-- label标签增强语义化-->
+<form action="" method="post">
+    <div>登录嘻嘻嘻</div>
+    <p>
+        <label for="name">账号：</label><input type="text" id="name" name="name" />
+    </p>
+    <p>
+        <label for="pwd">密码：</label><input type="password" id="pwd" name="pwd" />
+    </p>
+    <input type="checkbox" id="remember-me" name="remember-me" /><label for="remember-me">记住账号</label>
+    <input type="submit" value="登录" />
+</form>
+<hr/>
+
+<!-- fieldset标签增强表单语义，页面类似书签-->
+<form action="" method="post">
+    <fieldset>
+        <legend>登录哈哈哈</legend>
+    <p>
+        <label for="name">账号：</label><input type="text" id="name" name="name" />
+    </p>
+    <p>
+        <label for="pwd">密码：</label><input type="password" id="pwd" name="pwd" />
+    </p>
+    <input type="checkbox" id="remember-me" name="remember-me" /><label for="remember-me">记住账号</label>
+    <input type="submit" value="登录" />
+    </fieldset>
+</form>
+<hr/>
+
+<!-- 无序列表-->
+<ul>
+    <li><span>1 </span>HTML教程</li>
+    <li><span>2 </span>python教程</li>
+    <li><span>3 </span>golang教程</li>
+</ul>
+<hr/>
+
+<!--定义删除与插入 -->
+<div>
+    <p>HTML教程</p>
+    <p><del>原价￥99.9</del></p>
+    <p><ins>圣诞优惠价￥69.9</ins></p>
+</div>
+
+</body>
+</html>
