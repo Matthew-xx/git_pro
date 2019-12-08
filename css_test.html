@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CSS练习</title>
+    <!-- 子元素对应父元素中元素百分比 -->
+    <style type="text/css">
+        #father
+        {
+            width: 200px;
+            height: 160px;
+            border: 1px solid blue;
+            font-size: 30px;
+        }
+        #son
+        {
+            width: 50%;
+            height: 50%;
+            border: 1px solid red;
+            font-size: 50%;
+        }
+        p
+        {
+            width: 500px;
+            height: 20px;
+            text-indent: 2em;
+            border: 1px solid red;
+            font-size: 15px;
+        }
+    </style>
+</head>
+<body>
+<div id="father">
+    要努力啊
+    <div id="son">天空之城</div>
+</div>
+<hr/>
+<p>我有一只小毛驴我重来也不骑，哦~佳佳，我在北方的夜里四季如春</p>
+</body>
+
+<hr/>
+<head>
+    <title></title>
+    <style type="text/css">
+        body{font-size: 62.5%;}
+        #p1{font-size: 1em;}
+        #p2{font-size: 1.5em;}
+        #p3{font-size: 2em;}
+    </style>
+</head>
+<body>
+<p id="p1">当前字体1em，也即10px;</p>
+<p id="p2">当前字体1.5em，也即15px;</p>
+<p id="p3">当前字体2em，也即20px;</p>
+<hr/>
+
+</body>
+
+<!--css层叠优先级-->
+<head>
+    <title></title>
+    <style type="text/css">
+        #second{color: red;}
+        div{color: blue;}
+    </style>
+</head>
+<body>
+<div>质量三十六公克</div>
+<div id="second">质量三十六公克</div>
+<div>质量三十六公克</div>
+</body>
+<hr/>
+
+<head>
+    <title></title>
+    <!--外部样式，css样式在外部文件中定义-->
+    <link href="index.css" rel="stylesheet" type="text/css" />
+    <!--内部样式，css样式在style标签中定义-->
+    <style type="text/css"> p{color: blue;}</style>
+</head>
+<body>
+    <!--行内样式，css样式在元素style属性中定义-->
+    <p style="color: blue;">质量三十六公克</p>
+    <p>质量三十六公克</p>
+</body>
+<hr/>
+
+
+</html>
