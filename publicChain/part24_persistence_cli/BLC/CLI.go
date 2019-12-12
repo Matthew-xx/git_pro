@@ -1,14 +1,15 @@
-package main
+package BLC
 
 import (
-	"flag"
-	"fmt"
 	"log"
 	"os"
+	"fmt"
+	"flag"
 )
 
-//可以使用命令行+ 参数 运行
-//如输入： ./bc printChain   (bc是编译可执行文件，输出printChain函数运行的结果
+type CLI struct {
+	Blockchain *Blockchain
+}
 
 func printUsage()  {
 	fmt.Println("Usage:")
@@ -23,7 +24,15 @@ func isValidArgs()  {
 	}
 }
 
-func main()  {
+func (cli *CLI) addblock(data string)  {
+	cli.Blockchain.AddBlockToBlockchain(data)
+}
+
+func (cli *CLI) printchain()  {
+	cli.Blockchain.PrintChain()
+}
+
+func (cli *CLI) Run() {
 	isValidArgs()
 
 	addBlockCmd := flag.NewFlagSet("addblock",flag.ExitOnError)
@@ -55,12 +64,12 @@ func main()  {
 			os.Exit(1)
 		}
 		fmt.Println(*flagAddBlockData)
+		cli.addblock(*flagAddBlockData)
 	}
 
 	if printChainCmd.Parsed() {
-		fmt.Println("输出所有区块的数据")
+		//fmt.Println("输出所有区块的数据")
+		cli.printchain()
 	}
 }
 
-
-//  ./main addblock -data "maxxxxsf"   :输出  maxxxxxsf
