@@ -1,11 +1,13 @@
 package BLC
 
 import (
+	"encoding/hex"
 	"fmt"
 	"github.com/boltdb/bolt"
 	"log"
 	"math/big"
 	"os"
+	"strconv"
 	"time"
 )
 
@@ -187,8 +189,13 @@ func (blockchain *Blockchain)MineNewBlock(from []string,to []string,amount []str
 	//fmt.Println(to)
 	//fmt.Println(amount)
 
+	amount_value , _ := strconv.Atoi(amount[0])
+	tx := NewSimpleTransaction(from[0],to[0],amount_value)
+
+
 	//通过相关算法建立transaction数组
 	var txs []*Transaction
+	txs = append(txs,tx)
 
 	//获取最新区块的相关信息
 	var block *Block
@@ -218,5 +225,75 @@ func (blockchain *Blockchain)MineNewBlock(from []string,to []string,amount []str
 		}
 		return nil
 	})
+}
+
+//如果一个地址对应的TxOutput未花费，那么将这个transaction添加到数组中返回未消费输出
+func (blockchain *Blockchain) UnUTXOs(address string) []*TxOutput {
+	//遍历数据库查找
+
+	var unUTXOs []*TxOutput //用数组存储未消费输出
+	spentTxOutputs := make(map[string][]int)   //存储某用户的所有输入（已消费的
+
+	blockIterator := blockchain.Iterator()
+
+	for  {
+		block := blockIterator.Next()  //从迭代器中拿到区块
+
+		//fmt.Println(block)
+		//fmt.Println()  //空行
+
+		for _,tx := range block.Txs{
+			//遍历每个block里面的transaction(txHash,Vins,Vouts)
+			//判断输入Vins (创世区块除外
+
+			if tx.IsCoinbaseTransaction() == false { //除创世区块外的其他交易
+				for _,in := range tx.Vins{
+					//是否能够解锁(用户姓名是否相等)
+					if in.UnlockScriptSigWithAddress(address) {
+						//如果为真，则说明是所取的用户
+						//存储，id做key,
+						key := hex.EncodeToString(in.Txid)
+						spentTxOutputs[key] = append(spentTxOutputs[key],in.Vout) //
+					}
+				}
+			}
+			
+			//判断输出Vouts
+			for index,out := range tx.Vouts {
+				//解锁
+				if out.UnlockScriptPubKeyWithAddress(address) {
+					fmt.Println(out)
+					//用户对应一致后要判断输出是否已被消费
+					//spentTxOutputs已经存储了所有已消费的,
+					if spentTxOutputs != nil{
+
+						if len(spentTxOutputs) != 0 { //某个用户只有收款，在上面的付款数组中没记录到
+							for txHash,indexArray := range spentTxOutputs{
+
+								for _,i := range indexArray{
+									if index == i && txHash == hex.EncodeToString(tx.TxHash) {
+										//说明这笔钱已被花费
+										continue
+									} else {
+										unUTXOs = append(unUTXOs,out)
+									}
+								}
+							}
+						}else {
+							unUTXOs = append(unUTXOs,out)
+						}
+					}
+				}
+			}
+		}
+
+		var hashInt big.Int
+		hashInt.SetBytes(block.PrevBlockHash)
+
+		if hashInt.Cmp(big.NewInt(0)) == 0{
+			break;  //上面两个相等，说明已经遍历到创世区块了
+		}
+	}
+	return unUTXOs
 }
 

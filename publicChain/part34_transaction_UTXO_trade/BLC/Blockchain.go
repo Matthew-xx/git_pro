@@ -6,6 +6,7 @@ import (
 	"log"
 	"math/big"
 	"os"
+	"strconv"
 	"time"
 )
 
@@ -187,8 +188,13 @@ func (blockchain *Blockchain)MineNewBlock(from []string,to []string,amount []str
 	//fmt.Println(to)
 	//fmt.Println(amount)
 
+	amount_value , _ := strconv.Atoi(amount[0])
+	tx := NewSimpleTransaction(from[0],to[0],amount_value)
+
+
 	//通过相关算法建立transaction数组
 	var txs []*Transaction
+	txs = append(txs,tx)
 
 	//获取最新区块的相关信息
 	var block *Block
