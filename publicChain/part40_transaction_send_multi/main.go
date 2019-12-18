@@ -1,7 +1,7 @@
 package main
 
 import (
-	".//BLC"
+	"../part40_transaction_send_multi/BLC"
 )
 
 //创建创世区块并存到数据库
@@ -13,8 +13,10 @@ func main()  {
 
 	cli := BLC.CLI{}
 	cli.Run()
-	// createblockchain -address "mark"  创世块
+
+    //createblockchain -address "mark"
 	// send -from "[\"mark\"]" -to "[\"matthew\"]" -amount "[\"4\"]"
+	//send -from "[\"mark\",\"maxin\"]" -to "[\"maxin\",\"mark\"]" -amount "[\"1\",\"3\"]"
 }
 
 
