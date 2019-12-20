@@ -11,6 +11,7 @@ func main()  {
 	//3bae4359ac5fbeaf77091ccf6e1849319efffa2f
 
 	bytes := []byte("hello my love")
+	//bytes的长度不一样产生的bytes58长度也不一样
 	bytes58 := BLC.Base58Encode(bytes)  //加密
 	fmt.Printf("%x\n",bytes58)
 	fmt.Printf("%s\n",bytes58)  //地址
