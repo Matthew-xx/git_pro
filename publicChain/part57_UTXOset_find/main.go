@@ -1,7 +1,7 @@
 package main
 
 import (
-	"../part56_UTXOset_db/BLC"
+	"../part57_UTXOset_find/BLC"
 )
 
 func main() {

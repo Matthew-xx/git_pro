@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"crypto/ecdsa"
 	"encoding/hex"
-	"errors"
 	"fmt"
 	"github.com/boltdb/bolt"
 	"log"
@@ -447,7 +446,7 @@ func (blockchain *Blockchain) MineNewBlock(from []string, to []string, amount []
 
 	//奖励 (多了一笔transaction没有输入只有输出，凭空多出来的
 	tx := NewCoinbaseTransaction(from[0])
-	fmt.Println(from[0])
+	//fmt.Println(from[0])
 	txs = append(txs,tx)
 
 
@@ -557,7 +556,7 @@ func (bc *Blockchain) FindTransaction(ID []byte,txs []*Transaction) (Transaction
 			break;
 		}
 	}
-	return Transaction{},errors.New("Transaction is not found")
+	return Transaction{},nil
 }
 
 //验证数字签名
@@ -588,7 +587,7 @@ func (blc *Blockchain) FindUTXOMap() map[string]*TXOutputs {
 	for  { //遍历所有区块
 		block := blcIterator.Next()  //拿到最新区块
 		for i :=len(block.Txs)-1; i>= 0;i--{  //倒序查找（所有交易
-			txOutputs := &TXOutputs{[]*TXOutput{}} //传入空out
+			txOutputs := &TXOutputs{[]*UTXO{}} //传入空out
 			tx := block.Txs[i]  //第几个transaction
 
 			//过滤没有输入的transaction
@@ -622,11 +621,13 @@ func (blc *Blockchain) FindUTXOMap() map[string]*TXOutputs {
 						}
 					}
 					if isSpent == false{
-						txOutputs.Txouputs = append(txOutputs.Txouputs,out)
+						utxo := &UTXO{tx.TxHash,index,out}
+						txOutputs.UTXOS = append(txOutputs.UTXOS,utxo)
 					}
 				}else {
 					//说明未花费
-					txOutputs.Txouputs = append(txOutputs.Txouputs,out)
+					utxo := &UTXO{tx.TxHash,index,out}
+					txOutputs.UTXOS = append(txOutputs.UTXOS,utxo)
 				}
 			}
 

@@ -588,7 +588,7 @@ func (blc *Blockchain) FindUTXOMap() map[string]*TXOutputs {
 	for  { //遍历所有区块
 		block := blcIterator.Next()  //拿到最新区块
 		for i :=len(block.Txs)-1; i>= 0;i--{  //倒序查找（所有交易
-			txOutputs := &TXOutputs{[]*TXOutput{}} //传入空out
+			txOutputs := &TXOutputs{[]*UTXO{}} //传入空out
 			tx := block.Txs[i]  //第几个transaction
 
 			//过滤没有输入的transaction
@@ -622,11 +622,13 @@ func (blc *Blockchain) FindUTXOMap() map[string]*TXOutputs {
 						}
 					}
 					if isSpent == false{
-						txOutputs.Txouputs = append(txOutputs.Txouputs,out)
+						utxo := &UTXO{tx.TxHash,index,out}
+						txOutputs.UTXOS = append(txOutputs.UTXOS,utxo)
 					}
 				}else {
 					//说明未花费
-					txOutputs.Txouputs = append(txOutputs.Txouputs,out)
+					utxo := &UTXO{tx.TxHash,index,out}
+					txOutputs.UTXOS = append(txOutputs.UTXOS,utxo)
 				}
 			}
 
