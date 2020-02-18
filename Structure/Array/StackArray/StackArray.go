@@ -17,17 +17,17 @@ type Stack struct {
 
 func NewStack() *Stack {
 	mystack := new(Stack)
-	mystack.dataSource = make([]interface{},0,10)
-	mystack.capsize = 10
+	mystack.dataSource = make([]interface{},0,1000)
+	mystack.capsize = 1000
 	mystack.currentsize = 0
 
 	return mystack
 }
 
 func (mystack *Stack) Clear() {
-	mystack.dataSource = make([]interface{},0,10)
+	mystack.dataSource = make([]interface{},0,1000)
 	mystack.currentsize = 0
-	mystack.capsize = 10
+	mystack.capsize = 1000
 }
 
 func (mystack *Stack) Size() int {
