@@ -29,12 +29,19 @@ func main() {
 		allstrs[i] = string(line)
 		i++
 	}
+
+	var inputstr string="哥"
+	fmt.Println("要搜索的数据：",inputstr)
+
+	i2 := 0
 	for j:=0;j<N;j++ {
-		if strings.Contains(allstrs[j],"星") { //搜索字符串  “h"
+		if strings.Contains(allstrs[j],inputstr) { //搜索字符串  “h"
 			fmt.Println(allstrs[j])
+			i2++
 		}
 	}
 	fmt.Println("搜索耗时：",time.Since(startTime))
-	fmt.Printf("共发现 %d 行数据",i)
+	fmt.Printf("从 %d 行数据中搜出 %d 个结果",i,i2)
+
 }
 
