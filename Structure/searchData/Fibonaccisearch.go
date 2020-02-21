@@ -1,34 +1,60 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
-//斐波那契搜索(中值搜索:只需搜索一次。配合改进版的快速排序，速度能提升10倍）
+//斐波那契(数组不够时补足以凑够斐波那契数
+func makeFibArray(arr []int) []int {
+	length := len(arr)
+	fiblen := 2
+	first,second,third := 1,1,2
+	for third<length{ //找出最接近的斐波那契
+		//叠加计算斐波那契
+		third,first,second = first+second,second,third
+		fiblen++
+	}
+	fb := make([]int,fiblen)
+	fb[0]=1
+	fb[1]=1
+	for i:=2; i<fiblen; i++ {
+		fb[i] = fb[i-1]+fb[i-2]
+	}
+	return fb
+}
 
-//二分查找
-func Mid_search(arr []int,data int) int {
-	left := 0
-	right := len(arr)-1 //最上面最小面
-	i := 0
-	for left < right {
-		i++
-		fmt.Printf("第%d次搜索\n",i)
+//斐波那契搜索
+func Fib_search(arr []int,val int) int {
+	length := len(arr)
+	fabarr := makeFibArray(arr)  //定制匹配的斐波那契数组
+	filllength := fabarr[len(fabarr)-1]  //填充长度
 
-		leftv := float64(data-arr[left])  //左边到中段的数据
-		allv := float64(arr[right]-arr[left])  //整段数据
-		diff := float64(right-left)  //数据长度中间值
-		mid := int(float64(left) + leftv/allv*diff)   //计算中间值
+	fillarr := make([]int,filllength)   //填充的数组
+	for i,v := range arr{
+		fillarr[i] = v
+	}
 
-		if mid <0 || mid >=len(arr){
-			return -1
-		}
-		//在搜索数据的时候，使用下面的mid做中间值时，搜索4需要8次(10以上的数据要更久)。而上面的mid只需一次
-		//mid := (left+right)/2
-		if arr[mid]>data {
-			right = mid - 1
-		}else if arr[mid]<data{
-			left = mid +1
+	lastdata := arr[length-1] // 填充到最后一个数
+	for i:=length;i<filllength;i++ {
+		fillarr[i] = lastdata
+	}
+
+	left,mid,right := 0,0,length  //类似二分查找
+	kindex := len(fabarr)-1  //起游标作用
+	for left <=right{
+		mid = left+fabarr[kindex-1]-1 //斐波那契切割
+		if val < fillarr[mid] {
+			right = mid -1 //类似二分查找
+			kindex--
+		}else if val > fillarr[mid]{
+			left = mid + 1
+			kindex-=2
 		}else {
-			return mid  //代表找到
+			if mid>right {  //越界
+				return right
+			}else {
+				return mid
+			}
 		}
 	}
 	return -1  //不存在
@@ -39,15 +65,19 @@ func main()  {
 		arr[i]=i
 	}
 
-	var inputdata int
-	fmt.Println("输入要搜索的数据：")
-	fmt.Scanf("%d",&inputdata)
-	index := Mid_search(arr,inputdata)
-	if index == -1 {
-		fmt.Println("没有找到")
-	}else {
-		fmt.Println(index,arr[index])
+	for ; ;  {
+		var inputdata int
+		fmt.Println("输入要搜索的数据：")
+		fmt.Scanf("%d",&inputdata)
+		index := Fib_search(arr,inputdata)
+		if index == -1 {
+			fmt.Println("没有找到")
+		}else {
+			fmt.Println(index,arr[index])
+		}
 	}
+
 }
+
 
 

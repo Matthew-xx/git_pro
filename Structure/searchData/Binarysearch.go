@@ -33,7 +33,7 @@ func QuickSort(arr []int) []int {
 func Bin_search(arr []int,data int) int {
 	left := 0
 	right := len(arr)-1 //最上面最小面
-	for left < right {
+	for left <= right {
 		mid := (left+right)/2
 		if arr[mid]>data {
 			right = mid - 1
@@ -45,6 +45,7 @@ func Bin_search(arr []int,data int) int {
 	}
 	return -1  //不存在
 }
+
 func main()  {
 	arr := []int{2,4,1,13,9,7,10,5}
 	fmt.Println(arr)
