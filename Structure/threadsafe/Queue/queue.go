@@ -11,7 +11,7 @@ type Queue struct {
 }
 
 //新建队列
-func New() *Queue {
+func NewQueue() *Queue {
 	queue := &Queue{}
 	queue.queue = make([]interface{},0)
 	queue.len = 0
